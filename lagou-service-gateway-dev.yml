@@ -1,0 +1,31 @@
+server:
+  port: 9002
+spring:
+  application:
+    name: lagou-cloud-gateway
+  cloud:
+    gateway:
+      routes: # 路由可以有多个
+        - id: service-user-router  # 我们⾃定义的路由 ID，保持唯⼀
+          # gateway⽹关从服务注册中⼼获取实例信息然后负载后路由
+          uri: lb://lagou-service-user  # ⽬标服务地址 用户微服务（部署多实例） 动态路由：uri配置的应该是⼀个服务名称，⽽不应该是⼀个具体的服务实例的地址
+          predicates:  # 断⾔：路由条件，Predicate 接受⼀个输⼊参数，返回⼀个布尔值结果。该接⼝包含多种默 认⽅法来将Predicate 组合成其他复杂的逻辑（⽐如：与，或，⾮）。
+            - Path=/api/user/**
+          filters:
+            - StripPrefix=1
+        - id: service-code-router
+          uri: lb://lagou-service-code  # 验证码微服务
+          predicates:
+            - Path=/api/code/**
+          filters:
+            - StripPrefix=1
+        - id: service-email-router
+          uri: lb://lagou-service-email  # 邮件微服务
+          predicates:
+            - Path=/api/email/**
+          filters:
+            - StripPrefix=1
+# ip防暴刷配置
+limit:
+  minute: 1
+  count: 5

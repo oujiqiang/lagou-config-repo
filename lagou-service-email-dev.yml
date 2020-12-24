@@ -1,0 +1,11 @@
+server:
+  port: 8085
+spring:
+  # 邮箱配置
+  mail:
+    host: smtp.qq.com
+    username: 517309804@qq.com
+    password: awznvjqobwkkbjfi
+    properties.mail.smtp.port: 587
+    from: 517309804@qq.com # 发送邮件的地址，和上面username一致
+    default-encoding: UTF-8
